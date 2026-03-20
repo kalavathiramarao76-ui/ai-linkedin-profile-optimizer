@@ -64,7 +64,7 @@ export default function DashboardPage() {
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {tools.map((tool) => (
           <Link key={tool.href} href={tool.href}>
-            <Card className="h-full hover:border-zinc-700 transition-all cursor-pointer group">
+            <Card className="h-full hover:border-zinc-700 transition-all duration-300 cursor-pointer group hover:scale-[1.03] hover:shadow-lg hover:shadow-indigo-500/5">
               <CardHeader>
                 <div className={`h-10 w-10 rounded-lg ${tool.bg} flex items-center justify-center mb-2`}>
                   <tool.icon className={`h-5 w-5 ${tool.color}`} />

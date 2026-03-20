@@ -3,10 +3,12 @@ import { Hero } from '@/components/landing/hero';
 import { Features } from '@/components/landing/features';
 import { PricingSection } from '@/components/landing/pricing-section';
 import { Footer } from '@/components/landing/footer';
+import { OnboardingModal } from '@/components/OnboardingModal';
 
 export default function HomePage() {
   return (
     <div className="min-h-screen">
+      <OnboardingModal />
       <Navbar />
       <Hero />
       <Features />

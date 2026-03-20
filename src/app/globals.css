@@ -58,3 +58,133 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(240 3.7% 35%);
 }
+
+/* Animated gradient text */
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+.animated-gradient-text {
+  background: linear-gradient(270deg, #818cf8, #c084fc, #f472b6, #818cf8);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-shift 4s ease infinite;
+}
+
+/* Dot grid background for app pages */
+.dot-grid-bg {
+  background-image: radial-gradient(circle, hsl(240 3.7% 20%) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Confetti animation */
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-10vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+.confetti-piece {
+  position: absolute;
+  top: -10px;
+  animation: confetti-fall linear forwards;
+}
+
+/* Loading skeleton pulse */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+.results-skeleton {
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+/* Print styles */
+@media print {
+  /* Hide chrome */
+  nav, aside, .print\\:hidden, header, footer,
+  [class*="mobile-nav"], [class*="sidebar"] {
+    display: none !important;
+  }
+
+  /* Clean white background */
+  body, html {
+    background: white !important;
+    color: black !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Override dark theme for print */
+  * {
+    color: #1a1a1a !important;
+    border-color: #e5e7eb !important;
+  }
+
+  .print\\:block {
+    display: block !important;
+  }
+
+  /* Cards in print */
+  [class*="card"] {
+    background: white !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+
+  /* Score colors for print */
+  .text-emerald-400, .text-emerald-500 { color: #10b981 !important; }
+  .text-amber-400, .text-amber-500 { color: #f59e0b !important; }
+  .text-red-400, .text-red-500 { color: #ef4444 !important; }
+  .text-indigo-400, .text-indigo-500 { color: #6366f1 !important; }
+  .text-blue-400 { color: #3b82f6 !important; }
+
+  /* Score bars */
+  .bg-emerald-500 { background-color: #10b981 !important; }
+  .bg-indigo-500 { background-color: #6366f1 !important; }
+  .bg-amber-500 { background-color: #f59e0b !important; }
+  .bg-red-500 { background-color: #ef4444 !important; }
+
+  /* Badges */
+  [class*="badge"] {
+    border: 1px solid currentColor !important;
+    background: transparent !important;
+  }
+
+  /* Clean layout */
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .max-w-5xl {
+    max-width: 100% !important;
+  }
+
+  /* Print header styling */
+  .print-header {
+    text-align: center;
+    padding-bottom: 16px;
+  }
+
+  /* Dot grid off for print */
+  .dot-grid-bg {
+    background-image: none !important;
+  }
+
+  /* Remove hover effects */
+  .group:hover, [class*="hover\\:"] {
+    transform: none !important;
+  }
+
+  @page {
+    margin: 1.5cm;
+  }
+}
