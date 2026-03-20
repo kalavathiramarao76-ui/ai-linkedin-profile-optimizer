@@ -10,6 +10,7 @@ import { CopyButton } from '@/components/ui/copy-button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/components/ui/toast';
 import { Heading, Loader2, Sparkles } from 'lucide-react';
+import { trackEvent } from '@/lib/audit';
 
 interface Headline {
   text: string;
@@ -46,6 +47,7 @@ export default function HeadlinesPage() {
 
       const data = await response.json();
       setHeadlines(data.headlines || []);
+      trackEvent('generate', 'You', 'You generated headlines', role ? `Role: ${role}` : undefined);
       addToast({ title: 'Headlines generated!', variant: 'success' });
     } catch (error: any) {
       addToast({ title: 'Generation Failed', description: error.message, variant: 'error' });

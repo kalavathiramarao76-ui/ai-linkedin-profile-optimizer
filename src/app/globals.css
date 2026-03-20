@@ -105,6 +105,31 @@ body {
   animation: skeleton-pulse 1.5s ease-in-out infinite;
 }
 
+/* Presence pulse for online indicators */
+@keyframes presence-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(52, 211, 153, 0);
+  }
+}
+.presence-pulse {
+  animation: presence-pulse 2s ease-in-out infinite;
+}
+
+/* Audit log entry fade-in */
+@keyframes auditFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Print styles */
 @media print {
   /* Hide chrome */

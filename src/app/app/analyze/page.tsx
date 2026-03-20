@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/components/ui/toast';
 import { Loader2, Search, Sparkles } from 'lucide-react';
+import { trackEvent } from '@/lib/audit';
 
 export default function AnalyzePage() {
   const [profileText, setProfileText] = useState('');
@@ -40,6 +41,7 @@ export default function AnalyzePage() {
       const data = await response.json();
       // Store in session storage for the results page
       sessionStorage.setItem(`analysis-${data.id}`, JSON.stringify(data));
+      trackEvent('analyze', 'You', 'You analyzed a profile', targetRole ? `Target role: ${targetRole}` : undefined);
       router.push(`/app/results/${data.id}`);
     } catch (error: any) {
       addToast({ title: 'Analysis Failed', description: error.message, variant: 'error' });

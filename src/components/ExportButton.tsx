@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { trackEvent } from '@/lib/audit';
 
 interface AnalysisData {
   overallScore: number;
@@ -76,11 +77,13 @@ export function ExportButton({ data }: { data: AnalysisData }) {
   const [copied, setCopied] = useState(false);
 
   const handlePrint = () => {
+    trackEvent('export', 'You', 'You exported results as PDF');
     window.print();
   };
 
   const handleCopyMarkdown = async () => {
     const markdown = generateMarkdown(data);
+    trackEvent('export', 'You', 'You exported results as Markdown');
     try {
       await navigator.clipboard.writeText(markdown);
       setCopied(true);
