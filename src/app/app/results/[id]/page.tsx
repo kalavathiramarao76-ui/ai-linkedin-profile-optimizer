@@ -12,6 +12,7 @@ import { RadarChart } from '@/components/ui/radar-chart';
 import { Skeleton } from '@/components/ui/skeleton';
 import { formatScore, scoreColor } from '@/lib/utils';
 import { ExportButton } from '@/components/ExportButton';
+import { FavoriteButton } from '@/components/FavoriteButton';
 import { ArrowLeft, CheckCircle, AlertTriangle, XCircle, Lightbulb } from 'lucide-react';
 import { LanguageBadge, LANGUAGES } from '@/components/LanguageSelector';
 
@@ -139,7 +140,16 @@ export default function ResultsPage() {
             <p className="text-zinc-400 text-sm">Your comprehensive LinkedIn profile score</p>
           </div>
         </div>
-        <ExportButton data={data} />
+        <div className="flex items-center gap-2">
+          <FavoriteButton
+            id={`analysis-${params.id}`}
+            type="analysis"
+            title={`Profile Analysis — Score ${data.overallScore}/100`}
+            preview={`Headline: ${data.headlineScore}, Summary: ${data.summaryScore}, Experience: ${data.experienceScore}, Skills: ${data.skillsScore}, Keywords: ${data.keywordsScore}`}
+            data={data}
+          />
+          <ExportButton data={data} />
+        </div>
       </div>
 
       {/* Score overview */}

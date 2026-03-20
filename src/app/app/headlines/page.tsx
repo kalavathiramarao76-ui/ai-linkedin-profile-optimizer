@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { CopyButton } from '@/components/ui/copy-button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/components/ui/toast';
+import { FavoriteButton } from '@/components/FavoriteButton';
 import { Heading, Loader2, Sparkles } from 'lucide-react';
 import { trackEvent } from '@/lib/audit';
 
@@ -140,6 +141,14 @@ export default function HeadlinesPage() {
                     <p className="text-base font-medium text-white mb-2">{headline.text}</p>
                     <p className="text-xs text-zinc-500">{headline.tip}</p>
                   </div>
+                  <FavoriteButton
+                    id={`headline-${i}-${headline.text.slice(0, 20)}`}
+                    type="headline"
+                    title={headline.text}
+                    preview={`Style: ${headline.style} — ${headline.tip}`}
+                    data={headline}
+                    className="opacity-0 group-hover:opacity-100 transition-opacity"
+                  />
                   <CopyButton text={headline.text} className="opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
               </CardContent>

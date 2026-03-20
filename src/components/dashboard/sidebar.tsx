@@ -18,7 +18,9 @@ import {
   ClipboardList,
   Shield,
   Gauge,
+  Star,
 } from 'lucide-react';
+import { getFavoritesCount } from '@/lib/favorites';
 import { CommandPaletteTrigger } from '@/components/CommandPalette';
 import { NotificationCenter } from '@/components/NotificationCenter';
 import { ThemeToggle } from '@/components/ThemeToggle';
@@ -28,6 +30,7 @@ const navItems = [
   { href: '/app/analyze', label: 'Analyze Profile', icon: Search },
   { href: '/app/headlines', label: 'Headlines', icon: Heading },
   { href: '/app/summary', label: 'Summary Writer', icon: FileText },
+  { href: '/app/favorites', label: 'Favorites', icon: Star },
 ];
 
 const proItems = [
@@ -47,6 +50,7 @@ const bottomItems = [
 export function Sidebar() {
   const pathname = usePathname();
   const [teamCount, setTeamCount] = useState(0);
+  const [favCount, setFavCount] = useState(0);
 
   useEffect(() => {
     try {
@@ -56,6 +60,7 @@ export function Sidebar() {
         setTeamCount(Array.isArray(members) ? members.length : 0);
       }
     } catch {}
+    setFavCount(getFavoritesCount());
 
     const handleStorage = () => {
       try {
@@ -67,10 +72,14 @@ export function Sidebar() {
       } catch {}
     };
 
+    const handleFavChange = () => setFavCount(getFavoritesCount());
+
     window.addEventListener('storage', handleStorage);
+    window.addEventListener('favorites-changed', handleFavChange);
     const interval = setInterval(handleStorage, 2000);
     return () => {
       window.removeEventListener('storage', handleStorage);
+      window.removeEventListener('favorites-changed', handleFavChange);
       clearInterval(interval);
     };
   }, []);
@@ -95,6 +104,7 @@ export function Sidebar() {
       <nav className="flex-1 px-3 space-y-1">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
+          const isFav = item.href === '/app/favorites';
           return (
             <Link
               key={item.href}
@@ -102,12 +112,17 @@ export function Sidebar() {
               className={cn(
                 'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all',
                 isActive
-                  ? 'bg-indigo-600/15 text-indigo-400'
+                  ? isFav ? 'bg-amber-500/10 text-amber-400' : 'bg-indigo-600/15 text-indigo-400'
                   : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50'
               )}
             >
-              <item.icon className="h-4 w-4" />
+              <item.icon className={cn('h-4 w-4', isFav && isActive && 'fill-amber-400')} />
               {item.label}
+              {isFav && favCount > 0 && (
+                <span className="ml-auto px-1.5 py-0.5 text-[10px] font-semibold rounded-full bg-amber-500/20 text-amber-400">
+                  {favCount}
+                </span>
+              )}
             </Link>
           );
         })}

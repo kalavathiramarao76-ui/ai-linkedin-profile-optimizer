@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { CopyButton } from '@/components/ui/copy-button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/components/ui/toast';
+import { FavoriteButton } from '@/components/FavoriteButton';
 import { FileText, Loader2, Sparkles } from 'lucide-react';
 import { trackEvent } from '@/lib/audit';
 
@@ -153,6 +154,13 @@ export default function SummaryPage() {
                     </Badge>
                     <span className="text-xs text-zinc-500">{summary.wordCount} words</span>
                   </div>
+                  <FavoriteButton
+                    id={`summary-${i}-${summary.tone}`}
+                    type="summary"
+                    title={`${summary.tone.charAt(0).toUpperCase() + summary.tone.slice(1)} Summary`}
+                    preview={summary.text.slice(0, 120) + '...'}
+                    data={summary}
+                  />
                   <CopyButton text={summary.text} />
                 </div>
               </CardHeader>
