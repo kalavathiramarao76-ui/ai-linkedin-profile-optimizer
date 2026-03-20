@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { FileText, Heading, Home, Search, Users, ClipboardList, Shield, Gauge } from 'lucide-react';
+import { FileText, Heading, Home, Search, Users, ClipboardList, Shield, Gauge, Command } from 'lucide-react';
 
 const navItems = [
   { href: '/app', label: 'Home', icon: Home },
@@ -16,6 +16,12 @@ const navItems = [
 
 export function MobileNav() {
   const pathname = usePathname();
+
+  const openCommandPalette = () => {
+    window.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'k', metaKey: true, bubbles: true })
+    );
+  };
 
   return (
     <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 border-t border-zinc-800 bg-zinc-950/95 backdrop-blur-xl">
@@ -36,6 +42,13 @@ export function MobileNav() {
             </Link>
           );
         })}
+        <button
+          onClick={openCommandPalette}
+          className="flex flex-col items-center gap-1 px-3 py-1.5 rounded-lg text-xs text-zinc-500 transition-colors hover:text-indigo-400"
+        >
+          <Command className="h-5 w-5" />
+          Cmd+K
+        </button>
       </div>
     </nav>
   );

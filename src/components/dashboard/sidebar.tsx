@@ -19,6 +19,8 @@ import {
   Shield,
   Gauge,
 } from 'lucide-react';
+import { CommandPaletteTrigger } from '@/components/CommandPalette';
+import { NotificationCenter } from '@/components/NotificationCenter';
 
 const navItems = [
   { href: '/app', label: 'Dashboard', icon: Home },
@@ -75,12 +77,18 @@ export function Sidebar() {
   return (
     <aside className="hidden lg:flex flex-col w-64 border-r border-zinc-800 bg-zinc-950 h-screen sticky top-0">
       <div className="p-6">
-        <Link href="/" className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-lg bg-indigo-600 flex items-center justify-center">
-            <Linkedin className="h-4 w-4 text-white" />
-          </div>
-          <span className="font-semibold text-lg text-white">ProfileAI</span>
-        </Link>
+        <div className="flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2">
+            <div className="h-8 w-8 rounded-lg bg-indigo-600 flex items-center justify-center">
+              <Linkedin className="h-4 w-4 text-white" />
+            </div>
+            <span className="font-semibold text-lg text-white">ProfileAI</span>
+          </Link>
+          <NotificationCenter />
+        </div>
+        <div className="mt-4">
+          <CommandPaletteTrigger />
+        </div>
       </div>
 
       <nav className="flex-1 px-3 space-y-1">
