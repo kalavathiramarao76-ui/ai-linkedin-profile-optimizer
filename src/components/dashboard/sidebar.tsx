@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { CommandPaletteTrigger } from '@/components/CommandPalette';
 import { NotificationCenter } from '@/components/NotificationCenter';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 const navItems = [
   { href: '/app', label: 'Dashboard', icon: Home },
@@ -176,6 +177,7 @@ export function Sidebar() {
       </nav>
 
       <div className="px-3 pb-6 space-y-1">
+        <ThemeToggle />
         {bottomItems.map((item) => (
           <Link
             key={item.href}

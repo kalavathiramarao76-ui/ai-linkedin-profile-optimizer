@@ -25,8 +25,24 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const themeScript = `
+    (function() {
+      try {
+        var t = localStorage.getItem('profileai-theme') || 'dark';
+        var r = t === 'system'
+          ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+          : t;
+        document.documentElement.classList.add(r);
+        document.documentElement.style.colorScheme = r;
+      } catch(e) { document.documentElement.classList.add('dark'); }
+    })();
+  `;
+
   return (
-    <html lang="en" className="dark">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className={`${inter.className} bg-zinc-950 text-zinc-100 antialiased`}>
         <ToastProvider>{children}</ToastProvider>
       </body>

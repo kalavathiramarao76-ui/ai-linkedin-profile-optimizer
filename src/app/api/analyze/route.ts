@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { profileText, targetRole, industry } = body;
+    const { profileText, targetRole, industry, language } = body;
 
     if (!profileText || typeof profileText !== 'string' || profileText.trim().length < 50) {
       return NextResponse.json(
@@ -24,11 +24,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const languageMap: Record<string, string> = {
+      en: 'English', es: 'Spanish', fr: 'French',
+      de: 'German', pt: 'Portuguese', hi: 'Hindi',
+    };
+    const analysisLang = languageMap[language] || 'English';
+    const langInstruction = language && language !== 'en'
+      ? `\n\nIMPORTANT: Write ALL feedback text, suggestions, and descriptions in ${analysisLang}. Keep JSON keys in English but all string values must be in ${analysisLang}.`
+      : '';
+
     const userMessage = `Profile Text:
 ${profileText}
 
 ${targetRole ? `Target Role: ${targetRole}` : ''}
 ${industry ? `Industry: ${industry}` : ''}
+${langInstruction}
 
 Analyze this LinkedIn profile and return the JSON assessment.`;
 

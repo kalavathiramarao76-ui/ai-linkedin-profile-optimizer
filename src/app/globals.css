@@ -23,6 +23,26 @@
     --ring: 239 84% 67%;
     --radius: 0.75rem;
   }
+
+  .light {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --primary: 239 84% 67%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 239 84% 67%;
+  }
 }
 
 @layer base {
@@ -33,6 +53,31 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Theme transition */
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+  transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease, box-shadow 200ms ease !important;
+}
+
+/* Light mode overrides for hardcoded dark colors */
+.light .bg-zinc-950 { background-color: hsl(0 0% 100%) !important; }
+.light .bg-zinc-900 { background-color: hsl(0 0% 98%) !important; }
+.light .bg-zinc-800 { background-color: hsl(240 5% 92%) !important; }
+.light .bg-zinc-800\/50 { background-color: hsl(240 5% 92% / 0.5) !important; }
+.light .text-white { color: hsl(240 10% 3.9%) !important; }
+.light .text-zinc-100 { color: hsl(240 10% 10%) !important; }
+.light .text-zinc-200 { color: hsl(240 5% 20%) !important; }
+.light .text-zinc-300 { color: hsl(240 5% 30%) !important; }
+.light .text-zinc-400 { color: hsl(240 4% 46%) !important; }
+.light .text-zinc-500 { color: hsl(240 4% 46%) !important; }
+.light .text-zinc-600 { color: hsl(240 4% 46%) !important; }
+.light .border-zinc-700 { border-color: hsl(240 5% 85%) !important; }
+.light .border-zinc-800 { border-color: hsl(240 5% 90%) !important; }
+.light .hover\:text-zinc-200:hover { color: hsl(240 10% 10%) !important; }
+.light .hover\:bg-zinc-800\/50:hover { background-color: hsl(240 5% 92% / 0.5) !important; }
 
 html {
   scroll-behavior: smooth;

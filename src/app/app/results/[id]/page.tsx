@@ -13,6 +13,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { formatScore, scoreColor } from '@/lib/utils';
 import { ExportButton } from '@/components/ExportButton';
 import { ArrowLeft, CheckCircle, AlertTriangle, XCircle, Lightbulb } from 'lucide-react';
+import { LanguageBadge, LANGUAGES } from '@/components/LanguageSelector';
 
 interface AnalysisData {
   id: string;
@@ -22,6 +23,7 @@ interface AnalysisData {
   experienceScore: number;
   skillsScore: number;
   keywordsScore: number;
+  language?: { code: string; name: string; flag: string; nativeName: string };
   recommendations: {
     headline: { score: number; feedback: string; suggestions: string[] };
     summary: { score: number; feedback: string; suggestions: string[] };
@@ -128,7 +130,12 @@ export default function ResultsPage() {
             </Button>
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-white">Profile Analysis</h1>
+            <div className="flex items-center gap-3">
+              <h1 className="text-2xl font-bold text-white">Profile Analysis</h1>
+              {data.language && data.language.code !== 'en' && (
+                <LanguageBadge language={data.language} />
+              )}
+            </div>
             <p className="text-zinc-400 text-sm">Your comprehensive LinkedIn profile score</p>
           </div>
         </div>

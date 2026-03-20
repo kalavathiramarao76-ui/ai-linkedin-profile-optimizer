@@ -10,6 +10,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/components/ui/toast';
 import { Loader2, Search, Sparkles } from 'lucide-react';
 import { trackEvent } from '@/lib/audit';
+import { LanguageSelector, LanguageBadge, useAnalysisLanguage } from '@/components/LanguageSelector';
 
 export default function AnalyzePage() {
   const [profileText, setProfileText] = useState('');
@@ -18,6 +19,7 @@ export default function AnalyzePage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { addToast } = useToast();
+  const { language, setLanguage } = useAnalysisLanguage();
 
   const handleAnalyze = async () => {
     if (!profileText.trim()) {
@@ -30,7 +32,7 @@ export default function AnalyzePage() {
       const response = await fetch('/api/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ profileText, targetRole, industry }),
+        body: JSON.stringify({ profileText, targetRole, industry, language: language.code }),
       });
 
       if (!response.ok) {
@@ -39,6 +41,7 @@ export default function AnalyzePage() {
       }
 
       const data = await response.json();
+      data.language = language;
       // Store in session storage for the results page
       sessionStorage.setItem(`analysis-${data.id}`, JSON.stringify(data));
       trackEvent('analyze', 'You', 'You analyzed a profile', targetRole ? `Target role: ${targetRole}` : undefined);
@@ -57,6 +60,11 @@ export default function AnalyzePage() {
         <p className="text-zinc-400">
           Paste your LinkedIn profile text below and get a comprehensive AI analysis with scores and recommendations.
         </p>
+      </div>
+
+      <div className="flex items-center gap-3 mb-6">
+        <span className="text-sm text-zinc-400">Analysis language:</span>
+        <LanguageSelector value={language} onChange={setLanguage} />
       </div>
 
       <div className="grid gap-6">
