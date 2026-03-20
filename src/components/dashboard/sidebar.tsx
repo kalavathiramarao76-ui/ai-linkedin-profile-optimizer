@@ -16,6 +16,8 @@ import {
   CreditCard,
   Users,
   ClipboardList,
+  Shield,
+  Gauge,
 } from 'lucide-react';
 
 const navItems = [
@@ -28,6 +30,11 @@ const navItems = [
 const proItems = [
   { href: '/app/team', label: 'Team', icon: Users, showBadge: true },
   { href: '/app/audit', label: 'Audit Log', icon: ClipboardList, showBadge: false },
+];
+
+const enterpriseSettingsItems = [
+  { href: '/app/settings/sso', label: 'SSO / Security', icon: Shield },
+  { href: '/app/settings/usage', label: 'Usage & Billing', icon: Gauge },
 ];
 
 const bottomItems = [
@@ -126,6 +133,35 @@ export function Sidebar() {
                   {teamCount}
                 </span>
               )}
+            </Link>
+          );
+        })}
+
+        {/* Settings section divider */}
+        <div className="pt-4 pb-2">
+          <div className="flex items-center gap-2 px-3">
+            <span className="text-[10px] font-semibold text-zinc-600 uppercase tracking-wider">Settings</span>
+            <span className="px-1.5 py-0.5 text-[8px] font-bold rounded bg-gradient-to-r from-amber-500 to-orange-500 text-white uppercase">
+              Enterprise
+            </span>
+          </div>
+        </div>
+
+        {enterpriseSettingsItems.map((item) => {
+          const isActive = pathname === item.href;
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={cn(
+                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all',
+                isActive
+                  ? 'bg-indigo-600/15 text-indigo-400'
+                  : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50'
+              )}
+            >
+              <item.icon className="h-4 w-4" />
+              {item.label}
             </Link>
           );
         })}
