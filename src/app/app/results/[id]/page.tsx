@@ -13,6 +13,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { formatScore, scoreColor } from '@/lib/utils';
 import { ExportButton } from '@/components/ExportButton';
 import { FavoriteButton } from '@/components/FavoriteButton';
+import { ShareButton } from '@/components/ShareButton';
 import { ArrowLeft, CheckCircle, AlertTriangle, XCircle, Lightbulb } from 'lucide-react';
 import { LanguageBadge, LANGUAGES } from '@/components/LanguageSelector';
 
@@ -148,6 +149,7 @@ export default function ResultsPage() {
             preview={`Headline: ${data.headlineScore}, Summary: ${data.summaryScore}, Experience: ${data.experienceScore}, Skills: ${data.skillsScore}, Keywords: ${data.keywordsScore}`}
             data={data}
           />
+          <ShareButton data={data} />
           <ExportButton data={data} />
         </div>
       </div>
