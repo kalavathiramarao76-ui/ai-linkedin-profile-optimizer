@@ -5,14 +5,11 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import {
-  BarChart3,
   FileText,
   Heading,
   Home,
-  KeyRound,
   Linkedin,
   Search,
-  Settings,
   CreditCard,
   Users,
   ClipboardList,
@@ -85,14 +82,18 @@ export function Sidebar() {
   }, []);
 
   return (
-    <aside className="hidden lg:flex flex-col w-64 border-r border-zinc-800 bg-zinc-950 h-screen sticky top-0">
-      <div className="p-6">
+    <aside className="hidden lg:flex flex-col w-64 bg-[#0a0a0c]/95 backdrop-blur-2xl border-r border-white/[0.04] h-screen sticky top-0">
+      {/* Logo */}
+      <div className="px-5 py-5">
         <div className="flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-lg bg-indigo-600 flex items-center justify-center">
+          <Link href="/" className="flex items-center gap-3">
+            <div className="h-9 w-9 rounded-xl bg-purple-600 flex items-center justify-center">
               <Linkedin className="h-4 w-4 text-white" />
             </div>
-            <span className="font-semibold text-lg text-white">ProfileAI</span>
+            <div>
+              <span className="text-[15px] font-semibold text-white tracking-tight">ProfileForge</span>
+              <p className="text-[10px] text-purple-400 font-medium tracking-wider uppercase">AI Studio</p>
+            </div>
           </Link>
           <NotificationCenter />
         </div>
@@ -101,7 +102,11 @@ export function Sidebar() {
         </div>
       </div>
 
-      <nav className="flex-1 px-3 space-y-1">
+      {/* Divider */}
+      <div className="mx-5 border-t border-white/[0.04]" />
+
+      {/* Navigation */}
+      <nav className="flex-1 px-3 py-5 space-y-0.5">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           const isFav = item.href === '/app/favorites';
@@ -110,16 +115,20 @@ export function Sidebar() {
               key={item.href}
               href={item.href}
               className={cn(
-                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all',
+                'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-200',
                 isActive
-                  ? isFav ? 'bg-amber-500/10 text-amber-400' : 'bg-indigo-600/15 text-indigo-400'
-                  : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50'
+                  ? isFav ? 'bg-amber-500/10 text-amber-400' : 'bg-purple-500/10 text-purple-400'
+                  : 'text-zinc-500 hover:text-zinc-300 hover:bg-white/[0.03]'
               )}
             >
-              <item.icon className={cn('h-4 w-4', isFav && isActive && 'fill-amber-400')} />
-              {item.label}
+              <item.icon className={cn(
+                'h-[18px] w-[18px] flex-shrink-0 transition-colors',
+                isActive ? (isFav ? 'text-amber-400' : 'text-purple-400') : 'text-zinc-600 group-hover:text-zinc-400',
+                isFav && isActive && 'fill-amber-400'
+              )} />
+              <span className="flex-1">{item.label}</span>
               {isFav && favCount > 0 && (
-                <span className="ml-auto px-1.5 py-0.5 text-[10px] font-semibold rounded-full bg-amber-500/20 text-amber-400">
+                <span className="px-1.5 py-0.5 text-[10px] font-bold rounded-full bg-amber-500/15 text-amber-400">
                   {favCount}
                 </span>
               )}
@@ -127,11 +136,11 @@ export function Sidebar() {
           );
         })}
 
-        {/* Enterprise section divider */}
-        <div className="pt-4 pb-2">
-          <div className="flex items-center gap-2 px-3">
-            <span className="text-[10px] font-semibold text-zinc-600 uppercase tracking-wider">Enterprise</span>
-            <span className="px-1.5 py-0.5 text-[8px] font-bold rounded bg-gradient-to-r from-indigo-500 to-purple-500 text-white uppercase">
+        {/* Enterprise section */}
+        <div className="pt-6 pb-2">
+          <div className="flex items-center gap-2 px-3.5">
+            <span className="text-[10px] font-semibold text-zinc-700 uppercase tracking-wider">Enterprise</span>
+            <span className="px-1.5 py-0.5 text-[8px] font-bold rounded bg-gradient-to-r from-purple-500 to-violet-500 text-white uppercase">
               Pro
             </span>
           </div>
@@ -144,16 +153,16 @@ export function Sidebar() {
               key={item.href}
               href={item.href}
               className={cn(
-                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all',
+                'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-200',
                 isActive
-                  ? 'bg-indigo-600/15 text-indigo-400'
-                  : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50'
+                  ? 'bg-purple-500/10 text-purple-400'
+                  : 'text-zinc-500 hover:text-zinc-300 hover:bg-white/[0.03]'
               )}
             >
-              <item.icon className="h-4 w-4" />
-              {item.label}
+              <item.icon className={cn('h-[18px] w-[18px] flex-shrink-0', isActive ? 'text-purple-400' : 'text-zinc-600')} />
+              <span className="flex-1">{item.label}</span>
               {item.showBadge && teamCount > 0 && (
-                <span className="ml-auto px-1.5 py-0.5 text-[10px] font-semibold rounded-full bg-indigo-500/20 text-indigo-400">
+                <span className="px-1.5 py-0.5 text-[10px] font-bold rounded-full bg-purple-500/15 text-purple-400">
                   {teamCount}
                 </span>
               )}
@@ -161,10 +170,10 @@ export function Sidebar() {
           );
         })}
 
-        {/* Settings section divider */}
-        <div className="pt-4 pb-2">
-          <div className="flex items-center gap-2 px-3">
-            <span className="text-[10px] font-semibold text-zinc-600 uppercase tracking-wider">Settings</span>
+        {/* Settings section */}
+        <div className="pt-6 pb-2">
+          <div className="flex items-center gap-2 px-3.5">
+            <span className="text-[10px] font-semibold text-zinc-700 uppercase tracking-wider">Settings</span>
             <span className="px-1.5 py-0.5 text-[8px] font-bold rounded bg-gradient-to-r from-amber-500 to-orange-500 text-white uppercase">
               Enterprise
             </span>
@@ -178,28 +187,30 @@ export function Sidebar() {
               key={item.href}
               href={item.href}
               className={cn(
-                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all',
+                'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-200',
                 isActive
-                  ? 'bg-indigo-600/15 text-indigo-400'
-                  : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50'
+                  ? 'bg-purple-500/10 text-purple-400'
+                  : 'text-zinc-500 hover:text-zinc-300 hover:bg-white/[0.03]'
               )}
             >
-              <item.icon className="h-4 w-4" />
+              <item.icon className={cn('h-[18px] w-[18px] flex-shrink-0', isActive ? 'text-purple-400' : 'text-zinc-600')} />
               {item.label}
             </Link>
           );
         })}
       </nav>
 
-      <div className="px-3 pb-6 space-y-1">
+      {/* Footer */}
+      <div className="px-3 pb-5 space-y-1">
+        <div className="mx-2 border-t border-white/[0.04] mb-3" />
         <ThemeToggle />
         {bottomItems.map((item) => (
           <Link
             key={item.href}
             href={item.href}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50 transition-all"
+            className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[13px] font-medium text-zinc-600 hover:text-zinc-400 hover:bg-white/[0.03] transition-all duration-200"
           >
-            <item.icon className="h-4 w-4" />
+            <item.icon className="h-[18px] w-[18px]" />
             {item.label}
           </Link>
         ))}
