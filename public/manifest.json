@@ -1,7 +1,7 @@
 {
-  "name": "ProfilePro AI — LinkedIn Profile Optimizer",
-  "short_name": "ProfilePro AI",
-  "description": "AI-powered LinkedIn profile analysis, scoring, and optimization",
+  "name": "ProfileForge AI — LinkedIn Profile Optimizer",
+  "short_name": "ProfileForge AI",
+  "description": "AI-powered LinkedIn profile optimizer: score, analyze & improve your profile for career growth.",
   "start_url": "/app",
   "display": "standalone",
   "background_color": "#09090b",
