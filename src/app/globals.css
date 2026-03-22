@@ -148,12 +148,66 @@ body {
   background-size: 256px 256px;
 }
 
+/* ===== MOTION GRAPHICS ===== */
+
+/* Letter reveal animation */
+@keyframes letterReveal {
+  from { opacity: 0; transform: translateY(100%); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.letter-reveal-char {
+  display: inline-block;
+  opacity: 0;
+  animation: letterReveal 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+/* Count-up animation */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.counter-animate {
+  display: inline-block;
+  animation: countUp 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+/* Float animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* 3D Tilt Card */
+.tilt-card {
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+/* Parallax layer */
+.parallax-layer {
+  will-change: transform;
+}
+
+/* Scroll snap */
+.scroll-snap-container {
+  scroll-snap-type: y proximity;
+}
+
+.scroll-snap-section {
+  scroll-snap-align: start;
+}
+
 /* Fade-up scroll animation */
 .fade-up {
   opacity: 0;
   transform: translateY(32px);
   transition: opacity 800ms cubic-bezier(0.16, 1, 0.3, 1),
               transform 800ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
 }
 .fade-up.is-visible {
   opacity: 1;
@@ -269,6 +323,49 @@ body {
   to {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+/* Reduced motion — respect user preferences */
+@media (prefers-reduced-motion: reduce) {
+  .letter-reveal-char {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+
+  .counter-animate {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+
+  .tilt-card {
+    transition: none !important;
+  }
+
+  .parallax-layer {
+    transform: none !important;
+    will-change: auto;
+  }
+
+  .fade-up {
+    opacity: 1;
+    transform: none;
+    transition: none !important;
+  }
+
+  .scroll-snap-container {
+    scroll-snap-type: none;
+  }
+
+  .score-ring-animated {
+    animation: none !important;
+  }
+
+  .score-bar-animated {
+    animation: none !important;
+    width: var(--bar-width) !important;
   }
 }
 
