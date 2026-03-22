@@ -278,6 +278,33 @@ body {
   animation: skeleton-pulse 1.5s ease-in-out infinite;
 }
 
+/* Shimmer line skeleton with stagger */
+@keyframes shimmer-slide {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+.shimmer-line {
+  background: linear-gradient(
+    90deg,
+    rgba(63, 63, 70, 0.3) 25%,
+    rgba(82, 82, 91, 0.5) 50%,
+    rgba(63, 63, 70, 0.3) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer-slide 1.8s ease-in-out infinite;
+  opacity: 0;
+  animation-fill-mode: backwards;
+  animation-name: shimmer-slide, shimmer-fade-in;
+}
+@keyframes shimmer-fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* Presence pulse for online indicators */
 @keyframes presence-pulse {
   0%, 100% {

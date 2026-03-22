@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/components/ui/toast';
 import { Loader2, Search, Sparkles } from 'lucide-react';
 import { trackEvent } from '@/lib/audit';
@@ -146,21 +145,28 @@ Python, JavaScript, React, AWS, System Design..."
         </Button>
 
         {loading && (
-          <Card>
-            <CardContent className="p-6 space-y-4">
-              <Skeleton className="h-6 w-3/4" />
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-4 w-5/6" />
-              <div className="grid grid-cols-5 gap-4 mt-6">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Skeleton key={i} className="h-20 w-full rounded-lg" />
-                ))}
-              </div>
-              <Skeleton className="h-4 w-2/3 mt-4" />
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-4 w-4/5" />
-            </CardContent>
-          </Card>
+          <div className="space-y-6">
+            {[0, 1, 2].map((group) => (
+              <Card key={group}>
+                <CardContent className="p-6 space-y-3">
+                  {[
+                    { width: '100%', delay: `${group * 200}ms` },
+                    { width: '80%', delay: `${group * 200 + 100}ms` },
+                    { width: '60%', delay: `${group * 200 + 200}ms` },
+                  ].map((line, i) => (
+                    <div
+                      key={i}
+                      className="h-4 rounded-full bg-zinc-800/60 shimmer-line"
+                      style={{
+                        width: line.width,
+                        animationDelay: line.delay,
+                      }}
+                    />
+                  ))}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         )}
       </div>
     </div>
