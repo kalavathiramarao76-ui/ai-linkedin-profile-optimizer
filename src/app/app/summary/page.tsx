@@ -42,6 +42,14 @@ export default function SummaryPage() {
         body: JSON.stringify({ type: 'summary', role, experience, achievements }),
       });
 
+      if (response.status === 429) {
+        const errorData = await response.json();
+        if (errorData.error === 'FREE_LIMIT_REACHED') {
+          window.dispatchEvent(new CustomEvent('usage-changed', { detail: errorData.count }));
+          return;
+        }
+      }
+
       if (!response.ok) {
         const error = await response.json();
         throw new Error(error.error || 'Generation failed');

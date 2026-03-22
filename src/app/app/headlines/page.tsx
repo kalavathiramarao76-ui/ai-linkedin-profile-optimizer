@@ -41,6 +41,14 @@ export default function HeadlinesPage() {
         body: JSON.stringify({ type: 'headlines', role, experience }),
       });
 
+      if (response.status === 429) {
+        const errorData = await response.json();
+        if (errorData.error === 'FREE_LIMIT_REACHED') {
+          window.dispatchEvent(new CustomEvent('usage-changed', { detail: errorData.count }));
+          return;
+        }
+      }
+
       if (!response.ok) {
         const error = await response.json();
         throw new Error(error.error || 'Generation failed');

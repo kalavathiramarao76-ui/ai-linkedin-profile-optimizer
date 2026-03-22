@@ -1,17 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { callAI, PROMPTS } from '@/lib/ai';
-import { rateLimit } from '@/lib/rate-limit';
+import { checkAndIncrementUsage, isAuthenticated } from '@/lib/rate-limit';
 
 export async function POST(request: NextRequest) {
   try {
-    // Rate limiting
-    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'anonymous';
-    const { success, remaining } = rateLimit(ip);
-    if (!success) {
-      return NextResponse.json(
-        { error: 'Too many requests. Please try again later.' },
-        { status: 429 }
-      );
+    // Server-side IP rate limiting
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+      || request.headers.get('x-real-ip')
+      || 'unknown';
+
+    const authed = await isAuthenticated(ip);
+
+    if (!authed) {
+      const { allowed, count, remaining } = await checkAndIncrementUsage(ip);
+      if (!allowed) {
+        return NextResponse.json(
+          {
+            error: 'FREE_LIMIT_REACHED',
+            message: `Free trial complete. You've used ${count} of 3 free generations. Sign in with Google to continue.`,
+            count,
+            remaining: 0,
+          },
+          { status: 429, headers: { 'Content-Type': 'application/json' } }
+        );
+      }
     }
 
     const body = await request.json();
@@ -99,9 +111,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    return NextResponse.json(result, {
-      headers: { 'X-RateLimit-Remaining': String(remaining) },
-    });
+    return NextResponse.json(result);
   } catch (error: any) {
     console.error('Generation error:', error);
     return NextResponse.json(

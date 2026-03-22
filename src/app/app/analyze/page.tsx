@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { incrementUsage } from '@/lib/usage';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
@@ -35,6 +34,14 @@ export default function AnalyzePage() {
         body: JSON.stringify({ profileText, targetRole, industry, language: language.code }),
       });
 
+      if (response.status === 429) {
+        const errorData = await response.json();
+        if (errorData.error === 'FREE_LIMIT_REACHED') {
+          window.dispatchEvent(new CustomEvent('usage-changed', { detail: errorData.count }));
+          return;
+        }
+      }
+
       if (!response.ok) {
         const error = await response.json();
         throw new Error(error.error || 'Analysis failed');
@@ -44,7 +51,6 @@ export default function AnalyzePage() {
       data.language = language;
       // Store in session storage for the results page
       sessionStorage.setItem(`analysis-${data.id}`, JSON.stringify(data));
-      incrementUsage();
       trackEvent('analyze', 'You', 'You analyzed a profile', targetRole ? `Target role: ${targetRole}` : undefined);
       router.push(`/app/results/${data.id}`);
     } catch (error: any) {

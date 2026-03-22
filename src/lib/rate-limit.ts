@@ -1,31 +1,57 @@
-const rateMap = new Map<string, { count: number; resetAt: number }>();
+import { Pool } from 'pg';
 
-const WINDOW_MS = 60_000; // 1 minute
-const MAX_REQUESTS = 10;
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL || 'postgresql://neondb_owner:npg_k7uVICgJw8fs@ep-summer-art-ad8f5ek0.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require',
+  ssl: { rejectUnauthorized: false },
+  max: 5,
+});
 
-export function rateLimit(identifier: string): { success: boolean; remaining: number } {
-  const now = Date.now();
-  const entry = rateMap.get(identifier);
+const MAX_FREE = 3;
+const APP_NAME = 'profileforge';
 
-  if (!entry || now > entry.resetAt) {
-    rateMap.set(identifier, { count: 1, resetAt: now + WINDOW_MS });
-    return { success: true, remaining: MAX_REQUESTS - 1 };
+export async function checkAndIncrementUsage(ip: string): Promise<{ allowed: boolean; count: number; remaining: number }> {
+  try {
+    const result = await pool.query(`
+      INSERT INTO usage_tracking (ip_address, app_name, usage_count, last_used)
+      VALUES ($1, $2, 1, NOW())
+      ON CONFLICT (ip_address, app_name)
+      DO UPDATE SET usage_count = usage_tracking.usage_count + 1, last_used = NOW()
+      RETURNING usage_count
+    `, [ip, APP_NAME]);
+
+    const count = result.rows[0].usage_count;
+    return {
+      allowed: count <= MAX_FREE,
+      count,
+      remaining: Math.max(0, MAX_FREE - count),
+    };
+  } catch (error) {
+    console.error('Rate limit check failed:', error);
+    return { allowed: true, count: 0, remaining: MAX_FREE };
   }
-
-  if (entry.count >= MAX_REQUESTS) {
-    return { success: false, remaining: 0 };
-  }
-
-  entry.count++;
-  return { success: true, remaining: MAX_REQUESTS - entry.count };
 }
 
-// Cleanup old entries every 5 minutes
-if (typeof setInterval !== 'undefined') {
-  setInterval(() => {
-    const now = Date.now();
-    for (const [key, value] of rateMap.entries()) {
-      if (now > value.resetAt) rateMap.delete(key);
-    }
-  }, 5 * 60_000);
+export async function markUserAuthenticated(ip: string, uid: string, email: string): Promise<void> {
+  try {
+    await pool.query(`
+      UPDATE usage_tracking
+      SET firebase_uid = $3, email = $4
+      WHERE ip_address = $1 AND app_name = $2
+    `, [ip, APP_NAME, uid, email]);
+  } catch (error) {
+    console.error('Mark auth failed:', error);
+  }
+}
+
+export async function isAuthenticated(ip: string): Promise<boolean> {
+  try {
+    const result = await pool.query(`
+      SELECT firebase_uid FROM usage_tracking
+      WHERE ip_address = $1 AND app_name = $2 AND firebase_uid IS NOT NULL
+      LIMIT 1
+    `, [ip, APP_NAME]);
+    return result.rows.length > 0;
+  } catch {
+    return false;
+  }
 }
