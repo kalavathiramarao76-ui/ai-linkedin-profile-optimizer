@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { incrementUsage } from '@/lib/usage';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
@@ -43,6 +44,7 @@ export default function AnalyzePage() {
       data.language = language;
       // Store in session storage for the results page
       sessionStorage.setItem(`analysis-${data.id}`, JSON.stringify(data));
+      incrementUsage();
       trackEvent('analyze', 'You', 'You analyzed a profile', targetRole ? `Target role: ${targetRole}` : undefined);
       router.push(`/app/results/${data.id}`);
     } catch (error: any) {

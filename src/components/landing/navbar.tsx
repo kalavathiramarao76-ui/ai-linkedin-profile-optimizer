@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { UserMenu } from '@/components/AuthGate';
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -23,6 +24,7 @@ export function Navbar() {
           >
             Launch App
           </Link>
+          <UserMenu />
         </div>
 
         <button

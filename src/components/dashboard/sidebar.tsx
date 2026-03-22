@@ -21,6 +21,7 @@ import { getFavoritesCount } from '@/lib/favorites';
 import { CommandPaletteTrigger } from '@/components/CommandPalette';
 import { NotificationCenter } from '@/components/NotificationCenter';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { UserMenu } from '@/components/AuthGate';
 
 const navItems = [
   { href: '/app', label: 'Dashboard', icon: Home },
@@ -203,6 +204,7 @@ export function Sidebar() {
       {/* Footer */}
       <div className="px-3 pb-5 space-y-1">
         <div className="mx-2 border-t border-white/[0.04] mb-3" />
+        <UserMenu />
         <ThemeToggle />
         {bottomItems.map((item) => (
           <Link
